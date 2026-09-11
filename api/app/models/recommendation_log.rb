@@ -1,0 +1,2 @@
+class RecommendationLog < ApplicationRecord
+end

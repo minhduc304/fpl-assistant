@@ -1,0 +1,30 @@
+# examples:
+#   periodic_cleanup:
+#     class: CleanSoftDeletedRecordsJob
+#     queue: background
+#     args: [ 1000, { batch_size: 500 } ]
+#     schedule: every hour
+#   periodic_cleanup_with_command:
+#     command: "SoftDeletedRecord.due.delete_all"
+#     priority: 2
+#     schedule: at 5am every day
+
+production:
+  clear_solid_queue_finished_jobs:
+    command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
+    schedule: every hour at minute 12
+  # Runs every 5 minutes so it's frequent enough to catch the live-gameweek
+  # cadence; FplClient's own 30-minute off-peak TTL makes most of these
+  # off-peak runs a no-op cache hit. See the comment atop IngestFplDataJob
+  # for the full reasoning.
+  ingest_fpl_data:
+    class: IngestFplDataJob
+    queue: default
+    schedule: every 5 minutes
+  # Cheap read-only DB+cache check (no HTTP calls), so a tight schedule costs
+  # nothing on off-peak runs -- it just no-ops until a gameweek's
+  # bootstrap-static event flips to finished + data_checked.
+  snapshot_gameweek:
+    class: SnapshotGameweekJob
+    queue: default
+    schedule: every 5 minutes

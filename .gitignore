@@ -1,0 +1,38 @@
+# AI-assistant tooling & internal planning
+.claude/
+.agents/
+tasks/
+skills-lock.json
+
+# Pre-planning research/spec docs 
+PRD-fpl-assistant.md
+TDD-fpl-assistant.md
+product-idea-brainstorm.md
+
+# Local tooling / editor state
+.neon
+
+# Secrets — real Neon credentials live in .env.local
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+npm-debug.log*
+.npm
+
+# TypeScript / build output
+dist/
+*.tsbuildinfo
+coverage/
+.vitest/
+
+# OS
+.DS_Store
+
+# Mock server logs (CI writes mock.log)
+mock.log
+
+# Work in progress
+frontend-mockups/

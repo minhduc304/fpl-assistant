@@ -1,0 +1,16 @@
+{
+  "name": "fpl-assistant",
+  "private": true,
+  "workspaces": [
+    "apps/web",
+    "apps/mcp",
+    "packages/api-client"
+  ],
+  "scripts": {
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "mock": "npx @stoplight/prism-cli mock openapi.yaml"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

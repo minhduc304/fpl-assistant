@@ -1,0 +1,97 @@
+name: Contract check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  contract-check:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: api_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/api_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck TypeScript workspaces
+        run: npm run typecheck
+
+      - name: Run apps/mcp test suite
+        run: npm test --workspace=apps/mcp
+
+      - name: Lint OpenAPI spec
+        run: npx --yes @stoplight/spectral-cli lint openapi.yaml
+
+      - name: Mock-server smoke check
+        run: |
+          set -e
+
+          npm run mock > mock.log 2>&1 &
+          MOCK_PID=$!
+          trap 'kill $MOCK_PID 2>/dev/null || true' EXIT
+
+          echo "Waiting for mock server to be ready..."
+          for i in $(seq 1 30); do
+            if grep -q "Prism is listening" mock.log 2>/dev/null; then
+              echo "Mock server is up."
+              break
+            fi
+            if ! kill -0 $MOCK_PID 2>/dev/null; then
+              echo "Mock server process exited early. Log output:"
+              cat mock.log
+              exit 1
+            fi
+            sleep 1
+            if [ "$i" -eq 30 ]; then
+              echo "Timed out waiting for mock server to start. Log output:"
+              cat mock.log
+              exit 1
+            fi
+          done
+
+          STATUS=$(curl -s -o /tmp/mock-response.json -w "%{http_code}" http://127.0.0.1:4010/teams/1234567)
+          echo "Response status: $STATUS"
+          cat /tmp/mock-response.json
+
+          if [ "$STATUS" != "200" ]; then
+            echo "Expected HTTP 200 from mock server, got $STATUS"
+            exit 1
+          fi
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3.12'
+          bundler-cache: true
+          working-directory: api
+
+      - name: Prepare test database
+        working-directory: api
+        run: bin/rails db:schema:load
+
+      - name: Run RSpec (includes openapi.yaml contract validation via committee-rails)
+        working-directory: api
+        run: bundle exec rspec
