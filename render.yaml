@@ -21,8 +21,12 @@ services:
     dockerContext: .
     autoDeploy: false
     envVars:
+      # Hardcoded to fpl-api's public URL, not Render's fromService private-
+      # network wiring: free web services can send private-network requests
+      # but cannot RECEIVE them, so fpl-mcp -> fpl-api over the private
+      # hostname:port fails ("fetch failed") while both are on the free plan.
+      # If FPL_API_BASE_URL calls start failing, check here first — either
+      # fpl-api was renamed (update this value) or fpl-api moved to a paid
+      # plan (switch back to fromService/hostport for private networking).
       - key: FPL_API_BASE_URL
-        fromService:
-          type: web
-          name: fpl-api
-          property: hostport
+        value: https://fpl-api-b5df.onrender.com
