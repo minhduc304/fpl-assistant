@@ -56,10 +56,9 @@ class RecommendationBuilder
       }
     end
 
-    # Candidate selection + scoring (Task 23); reasoning, confidence, and the
-    # BL-002 recommendation_logs write (Task 24). `relaxations` (which empty-pool
-    # filters were dropped) stays internal — it feeds the `candidate_pool`
-    # reasoning entry but is not part of the public RecommendationContract shape.
+    # `relaxations` (which empty-pool filters were dropped) stays internal —
+    # it feeds the `candidate_pool` reasoning entry but is not part of the
+    # public RecommendationContract shape.
     def suggest_transfer(team_id:, risk_tolerance: "balanced")
       squad = SquadAssembler.for(team_id: team_id)
       bootstrap_result = FplClient.bootstrap_static
@@ -226,9 +225,9 @@ class RecommendationBuilder
       ]
     end
 
-    # BL-002: log each generated transfer recommendation (chosen pair only).
-    # Mirrors log_recommendation — reuses already-fetched data, and a logging
-    # failure must never break the response.
+    # Logs each generated transfer recommendation (chosen pair only) for
+    # future ML evaluation. Mirrors log_recommendation — reuses already-fetched
+    # data, and a logging failure must never break the response.
     def log_transfer_recommendation(team_id:, squad:, top:, fixtures:)
       element = top[:in]
       scored = score_element(element, fixtures)
@@ -287,8 +286,8 @@ class RecommendationBuilder
         .min_by { |fixture| fixture["event"] }
     end
 
-    # BL-002: log each generated captain recommendation (top candidate only)
-    # for future ML evaluation. Reuses data already fetched/computed above —
+    # Logs each generated captain recommendation (top candidate only) for
+    # future ML evaluation. Reuses data already fetched/computed above —
     # no additional FplClient calls. A logging failure must never break the
     # actual recommendation response.
     def log_recommendation(team_id:, gameweek:, top:, fixtures:)

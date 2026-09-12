@@ -1,6 +1,6 @@
-# Shared mini-league-standings service (todo.md Task 38). Turns a
-# `leagues-classic/{id}/standings/` payload into the standings response, parsed
-# here in exactly one place, consumed by the getMiniLeagueStandings controller.
+# Turns a `leagues-classic/{id}/standings/` payload into the standings
+# response, parsed here in exactly one place, consumed by the
+# getMiniLeagueStandings controller.
 #
 # Single page only -- `standings.has_next` is intentionally NOT followed; the
 # contract returns the first page of results.

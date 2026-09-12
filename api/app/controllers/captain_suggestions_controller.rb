@@ -5,8 +5,8 @@ class CaptainSuggestionsController < ApplicationController
   def show
     return render_invalid_team_id unless params[:team_id].to_s.match?(TEAM_ID_FORMAT)
 
-    # Real existence check via the FPL entry endpoint (BL-004): an unknown
-    # team id raises FplClient::NotFoundError -> a real 404.
+    # Real existence check via the FPL entry endpoint: an unknown team id
+    # raises FplClient::NotFoundError -> a real 404.
     FplClient.entry(params[:team_id])
 
     result = RecommendationBuilder.suggest_captain(team_id: params[:team_id], gameweek: params[:gameweek])

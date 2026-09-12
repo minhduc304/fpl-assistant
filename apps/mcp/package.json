@@ -2,9 +2,12 @@
   "name": "mcp",
   "private": true,
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "typecheck": "tsc --noEmit",
     "dev": "tsx src/index.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/index.js",
     "test": "vitest run"
   },
   "dependencies": {

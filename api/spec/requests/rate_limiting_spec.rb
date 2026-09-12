@@ -1,6 +1,6 @@
 require "rails_helper"
 
-# BL-007 / Task 40: inbound rate limiting (rack-attack).
+# Inbound rate limiting (rack-attack).
 #
 # Rack::Attack.enabled is false in the test env by default (see
 # config/initializers/rack_attack.rb), so every other request spec is

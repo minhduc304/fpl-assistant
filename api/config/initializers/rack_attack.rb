@@ -1,4 +1,4 @@
-# Inbound rate limiting for the Rails API (BL-007 / Task 40).
+# Inbound rate limiting for the Rails API.
 #
 # TDD-fpl-assistant.md "Failure modes and mitigations": rate-limit the API's
 # own endpoints at 60 requests/minute/IP as a starting threshold, "explicitly

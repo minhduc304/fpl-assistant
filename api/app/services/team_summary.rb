@@ -1,6 +1,6 @@
-# Shared team-summary service (todo.md Task 31). Turns an `entry/{id}/` payload
-# into a Team-shaped record, parsed here in exactly one place, consumed by the
-# getTeam controller (Task 32) and TeamComparisonsController (Task 33).
+# Turns an `entry/{id}/` payload into a Team-shaped record, parsed here in
+# exactly one place, consumed by the getTeam controller and
+# TeamComparisonsController.
 #
 # NotFoundError / UnavailableError from FplClient propagate unchanged — the
 # controller layer maps them.

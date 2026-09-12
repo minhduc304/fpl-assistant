@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: fpl-api
+    runtime: docker
+    dockerfilePath: api/Dockerfile
+    dockerContext: api
+    autoDeploy: false
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: RAILS_MASTER_KEY
+        sync: false
+
+  # Build context is repo root: apps/mcp needs the npm workspace, not just its own subtree.
+  - type: web
+    name: fpl-mcp
+    runtime: docker
+    dockerfilePath: apps/mcp/Dockerfile
+    dockerContext: .
+    autoDeploy: false
+    envVars:
+      - key: FPL_API_BASE_URL
+        fromService:
+          type: web
+          name: fpl-api
+          property: hostport

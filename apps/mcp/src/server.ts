@@ -9,17 +9,17 @@ import { registerStandingsChartsTools } from "./tools/register-standings-charts-
 import { registerSquadTools } from "./tools/register-squad-tools.js";
 
 /**
- * Builds the MCP server instance. Tool registration happens in Tasks 43-48.
+ * Builds the MCP server instance.
  */
 export function createServer(): McpServer {
   const server = new McpServer({ name: "fpl-assistant-mcp", version: "0.0.0" });
 
-  registerPlayerTools(server); // Task 43
-  registerTeamTools(server); // Task 44
-  registerOpinionatedTools(server); // Task 45
-  registerFixturesTools(server); // Task 46
-  registerStandingsChartsTools(server); // Task 47
-  registerSquadTools(server); // Task 48
+  registerPlayerTools(server);
+  registerTeamTools(server);
+  registerOpinionatedTools(server);
+  registerFixturesTools(server);
+  registerStandingsChartsTools(server);
+  registerSquadTools(server);
 
   return server;
 }
@@ -27,8 +27,8 @@ export function createServer(): McpServer {
 /**
  * Handles one Streamable HTTP request against a fresh, stateless transport.
  * No session store, no held-open SSE state: a new McpServer + transport pair
- * is created and torn down per request, matching the "no per-connection state
- * to keep" MVP decision (Phase 12 Planning Note).
+ * is created and torn down per request — deliberately no per-connection state
+ * to keep for the MVP.
  */
 export async function handleMcpRequest(
   req: IncomingMessage,

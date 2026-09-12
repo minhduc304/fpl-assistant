@@ -5,4 +5,8 @@ if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:prepare
 fi
 
+# Thruster listens on HTTP_PORT (default 80), not PORT. Render sets PORT and
+# expects the process to bind to it, so forward PORT into HTTP_PORT when set.
+export HTTP_PORT="${PORT:-80}"
+
 exec "${@}"

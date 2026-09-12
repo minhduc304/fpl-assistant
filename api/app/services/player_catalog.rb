@@ -1,6 +1,6 @@
-# Shared player-catalog service (todo.md Task 27). Turns FPL `bootstrap-static`
-# into `Player`-shaped records, parsed here in exactly one place and consumed by
-# the getPlayerStats / searchPlayers / comparePlayers controllers (Tasks 28-30).
+# Turns FPL `bootstrap-static` into `Player`-shaped records, parsed here in
+# exactly one place and consumed by the getPlayerStats / searchPlayers /
+# comparePlayers controllers.
 #
 # Derivation (no hardcoded position or team map):
 #   name         = element `web_name`

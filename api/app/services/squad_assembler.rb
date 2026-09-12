@@ -1,7 +1,7 @@
-# Shared squad-assembly service (todo.md Task 19). Turns raw FPL data into the
-# manager's current 15-player squad. The `entry/{id}/event/{gw}/picks` payload is
-# parsed here in exactly one place, consumed by both the get_squad controller
-# (Task 20) and RecommendationBuilder.suggest_transfer (Task 23).
+# Turns raw FPL data into the manager's current 15-player squad. The
+# `entry/{id}/event/{gw}/picks` payload is parsed here in exactly one place,
+# consumed by both the get_squad controller and
+# RecommendationBuilder.suggest_transfer.
 #
 # NotFoundError / UnavailableError from FplClient propagate unchanged — the
 # controller layer maps them.

@@ -95,3 +95,9 @@ jobs:
       - name: Run RSpec (includes openapi.yaml contract validation via committee-rails)
         working-directory: api
         run: bundle exec rspec
+
+      - name: Fire Render deploy hooks
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_API }}"
+          curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_MCP }}"

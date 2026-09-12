@@ -7,8 +7,8 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { handleMcpRequest } from "./server.js";
 
 /**
- * End-to-end proof, separate from every Task 43-48 tool's own mocked-API-client
- * unit tests: boots the REAL MCP HTTP transport and drives it with a REAL
+ * End-to-end proof, separate from every tool's own mocked-API-client unit
+ * tests: boots the REAL MCP HTTP transport and drives it with a REAL
  * @modelcontextprotocol/sdk Streamable HTTP client, over real localhost HTTP,
  * against a REAL Rails-contract server.
  *

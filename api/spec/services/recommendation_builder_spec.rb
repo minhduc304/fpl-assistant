@@ -423,7 +423,7 @@ RSpec.describe RecommendationBuilder do
       end
     end
 
-    describe "BL-002 logging" do
+    describe "recommendation logging" do
       def log_scenario
         out = bs_element(id: 1, team: 1, element_type: 3, points_per_game: "2.0", web_name: "Out", now_cost: 60)
         owned = [ out ] + owned_filler(14, start_id: 100)

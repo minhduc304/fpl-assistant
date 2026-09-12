@@ -1,6 +1,6 @@
-# Shared chart-series service (todo.md Task 37). Turns an `entry/{id}/history/`
-# payload's `current[]` array into a `ChartData`-shaped series, parsed here in
-# exactly one place, consumed by the getChartData controller (Task 37).
+# Turns an `entry/{id}/history/` payload's `current[]` array into a
+# `ChartData`-shaped series, parsed here in exactly one place, consumed by the
+# getChartData controller.
 #
 # `type` maps to `current[]` fields:
 #   points_per_gameweek -> { x: event, y: points }

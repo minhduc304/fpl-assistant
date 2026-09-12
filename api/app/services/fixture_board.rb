@@ -1,7 +1,6 @@
-# Shared fixture-board service (todo.md Task 34). Turns `FplClient.fixtures`
-# (a bare JSON array of FPL fixture objects) + `bootstrap-static` `teams[]`
-# into `Fixture`-shaped records, parsed here in exactly one place and consumed
-# by the getFixtures controller (Task 35).
+# Turns `FplClient.fixtures` (a bare JSON array of FPL fixture objects) +
+# `bootstrap-static` `teams[]` into `Fixture`-shaped records, parsed here in
+# exactly one place and consumed by the getFixtures controller.
 #
 # Shaping:
 #   gameweek        = FPL `event` (fixtures with a null event are dropped)

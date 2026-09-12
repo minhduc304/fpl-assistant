@@ -50,8 +50,8 @@ function extractMessage(errorBody: unknown): string {
 }
 
 /**
- * Every Task 43-48 tool handler calls the Rails API through this helper instead
- * of a bespoke per-tool try/catch. It:
+ * Every tool handler calls the Rails API through this helper instead of a
+ * bespoke per-tool try/catch. It:
  *  - applies RAILS_CALL_TIMEOUT_MS to the call (no retry/backoff)
  *  - maps a non-2xx Rails response to an `isError: true` tool result
  *  - lets a genuine network failure or timeout throw, so the MCP SDK turns it
@@ -62,7 +62,11 @@ function extractMessage(errorBody: unknown): string {
 export async function callRailsTool<T>(
   fn: (client: ApiClient) => Promise<{ data?: T; error?: unknown; response: Response }>
 ): Promise<T | RailsToolErrorResult> {
-  const baseUrl = process.env.FPL_API_BASE_URL ?? "";
+  const rawBaseUrl = process.env.FPL_API_BASE_URL ?? "";
+  // Render's `fromService`/`hostport` blueprint reference yields a bare
+  // "host:port" with no scheme; Render's private service network is plain
+  // HTTP, so default to that when no scheme is already present.
+  const baseUrl = /^[a-z][a-z0-9+.-]*:\/\//i.test(rawBaseUrl) ? rawBaseUrl : `http://${rawBaseUrl}`;
   const client = withTimeout(createApiClient(baseUrl));
   const { data, error, response } = await fn(client);
 
