@@ -4,7 +4,7 @@ class PlayersController < ApplicationController
 
   # GET /players/:player_id (getPlayerStats)
   def show
-    player = PlayerCatalog.find(params[:player_id])
+    player = PlayerCatalog.find(params[:player_id].to_i)
     render json: serialize_show(player), status: :ok
   rescue PlayerCatalog::NotFoundError
     render json: { message: "That player ID doesn't exist" }, status: :not_found

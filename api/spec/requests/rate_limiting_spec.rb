@@ -23,7 +23,7 @@ RSpec.describe "Inbound rate limiting", type: :request do
   end
 
   it "throttles a documented endpoint at the limit and returns a contract-matching 429" do
-    allow(PlayerCatalog).to receive(:find).with("302").and_return(
+    allow(PlayerCatalog).to receive(:find).with(302).and_return(
       PlayerCatalog::Player.new(
         player_id: 302, name: "M. Salah", team: "Liverpool", position: "MID",
         price: 12.8, total_points: 68, form: 6.4, data_as_of: nil, stale: false

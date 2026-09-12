@@ -23,7 +23,7 @@ RSpec.describe "Player read endpoints", type: :request do
 
   describe "GET /players/:player_id" do
     it "returns 200 with a Player-shaped body" do
-      allow(PlayerCatalog).to receive(:find).with("302").and_return(player)
+      allow(PlayerCatalog).to receive(:find).with(302).and_return(player)
 
       get "/players/302"
 
