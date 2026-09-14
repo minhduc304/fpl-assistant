@@ -36,3 +36,6 @@ mock.log
 
 # Work in progress
 frontend-mockups/
+design-state.md
+docs/
+.ulpi/
