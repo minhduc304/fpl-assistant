@@ -4,3 +4,15 @@ export function formatDataAsOfTime(isoTimestamp: string): string {
     minute: "2-digit",
   });
 }
+
+const POSITION_LABELS: Record<string, string> = {
+  GKP: "Goalkeeper",
+  DEF: "Defender",
+  MID: "Midfielder",
+  FWD: "Forward",
+};
+
+export function formatPosition(position: string | undefined): string {
+  if (!position) return "—";
+  return POSITION_LABELS[position] ?? position;
+}
