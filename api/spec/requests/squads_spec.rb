@@ -11,7 +11,8 @@ RSpec.describe "GET /teams/:team_id/squad", type: :request do
           is_captain: i == 1,
           is_vice_captain: i == 2,
           now_cost: 40 + i,
-          element_type: (i % 4) + 1
+          element_type: (i % 4) + 1,
+          starting: i <= 11
         )
       end,
       formation: "3-4-3",
@@ -33,7 +34,7 @@ RSpec.describe "GET /teams/:team_id/squad", type: :request do
     expect(body["picks"].size).to eq(15)
     expect(body["picks"].first).to eq(
       "player_id" => 1, "name" => "Player1", "position" => "DEF",
-      "is_captain" => true, "is_vice_captain" => false
+      "is_captain" => true, "is_vice_captain" => false, "is_starting" => true
     )
     assert_response_schema_confirm(200)
   end

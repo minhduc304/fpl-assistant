@@ -21,7 +21,8 @@ class SquadsController < ApplicationController
           name: pick.name,
           position: pick.position,
           is_captain: pick.is_captain,
-          is_vice_captain: pick.is_vice_captain
+          is_vice_captain: pick.is_vice_captain,
+          is_starting: pick.starting
         }
       end,
       stale: !!squad.stale

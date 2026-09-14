@@ -9,7 +9,7 @@ info:
     comparison, and chart data.
 
     Draft v0.1 — pending review (see tasks/todo.md Task 4). Not yet locked.
-  version: 1.5.0
+  version: 1.6.0
   contact:
     name: FPL Assistant
     email: jeffvu304@gmail.com
@@ -87,11 +87,13 @@ paths:
                     position: "MID"
                     is_captain: true
                     is_vice_captain: false
+                    is_starting: true
                   - player_id: 401
                     name: "E. Haaland"
                     position: "FWD"
                     is_captain: false
                     is_vice_captain: true
+                    is_starting: true
                 data_as_of: "2026-09-06T09:00:00Z"
                 stale: false
         '404':
@@ -695,6 +697,9 @@ components:
           type: boolean
         is_vice_captain:
           type: boolean
+        is_starting:
+          type: boolean
+          description: True if this pick is in the starting XI, false if on the bench
 
     Player:
       type: object

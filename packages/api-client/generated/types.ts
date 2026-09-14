@@ -264,6 +264,8 @@ export interface components {
             position?: "GKP" | "DEF" | "MID" | "FWD";
             is_captain?: boolean;
             is_vice_captain?: boolean;
+            /** @description True if this pick is in the starting XI, false if on the bench */
+            is_starting?: boolean;
         };
         Player: {
             player_id?: number;
@@ -462,14 +464,16 @@ export interface operations {
                      *           "name": "M. Salah",
                      *           "position": "MID",
                      *           "is_captain": true,
-                     *           "is_vice_captain": false
+                     *           "is_vice_captain": false,
+                     *           "is_starting": true
                      *         },
                      *         {
                      *           "player_id": 401,
                      *           "name": "E. Haaland",
                      *           "position": "FWD",
                      *           "is_captain": false,
-                     *           "is_vice_captain": true
+                     *           "is_vice_captain": true,
+                     *           "is_starting": true
                      *         }
                      *       ],
                      *       "data_as_of": "2026-09-06T09:00:00Z",
