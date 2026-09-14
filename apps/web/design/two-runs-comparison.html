@@ -1,0 +1,228 @@
+<title>Two Design Runs</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&family=IBM+Plex+Mono:wght@400;500&family=Oswald:wght@500;600&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  :root{
+    --page-bg:#0E0E10;
+    --page-fg:#E9E9EC;
+    --page-muted:#9A9AA3;
+    --page-border:rgba(255,255,255,0.08);
+    --font-ui: "Geist", ui-sans-serif, system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--page-bg);
+    color:var(--page-fg);
+    font-family:var(--font-ui);
+    margin:0;
+    padding-inline:20px;
+    padding-block:48px;
+  }
+  h1,h2,h3{text-wrap:balance; margin:0;}
+  p{margin:0;}
+
+  .page{max-width:1160px; margin-inline:auto; display:flex; flex-direction:column; gap:40px;}
+
+  .masthead{display:flex; flex-direction:column; gap:10px; border-bottom:1px solid var(--page-border); padding-bottom:24px;}
+  .eyebrow{font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--page-muted);}
+  .masthead h1{font-size:26px; font-weight:600; letter-spacing:-0.01em;}
+  .masthead .sub{color:var(--page-muted); font-size:15px; max-width:70ch; line-height:1.55;}
+
+  .compare-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  @media (max-width:860px){ .compare-grid{grid-template-columns:1fr;} }
+
+  .run{
+    border:1px solid var(--page-border);
+    border-radius:10px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .run-head{
+    padding:20px 20px 16px;
+    border-bottom:1px solid var(--page-border);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .run-head .tag{font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--page-muted);}
+  .run-head h2{font-size:18px; font-weight:600;}
+  .run-head .desc{font-size:13px; color:var(--page-muted); line-height:1.5;}
+
+  .run-meta{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1px;
+    background:var(--page-border);
+    font-size:12px;
+  }
+  .run-meta div{padding:10px 14px; background:var(--page-bg);}
+  .run-meta .k{color:var(--page-muted); display:block; margin-bottom:2px;}
+
+  /* ---- Run A tokens (terminal-clean / designpowers) ---- */
+  .runA{
+    --bg:#0B0E14; --surface:#12161F; --fg:#E7EAF0; --muted:#9AA4B2;
+    --accent:#5FB8AE; --error:#C97066; --border:rgba(255,255,255,0.08);
+    --font-sans:"Geist", ui-sans-serif, sans-serif;
+    --font-mono:"IBM Plex Mono", monospace;
+  }
+  /* ---- Run B tokens (industrial-signage / frontend-design-ui-ux) ---- */
+  .runB{
+    --bg:#1A140C; --surface:#241C10; --fg:#F3EBDD; --muted:#B8A98F;
+    --accent:#E8A33D; --ink:#241206; --error:#D9634A; --border:rgba(255,235,210,0.10);
+    --font-sans:"Work Sans", ui-sans-serif, sans-serif;
+    --font-display:"Oswald", ui-sans-serif, sans-serif;
+    --font-mono:"JetBrains Mono", monospace;
+  }
+
+  .swatch-row{display:flex; gap:1px; background:var(--border); border:1px solid var(--border);}
+  .swatch{flex:1; padding:12px; background:var(--surface); display:flex; flex-direction:column; gap:8px;}
+  .swatch .chip{height:32px; border-radius:4px; border:1px solid var(--border);}
+  .swatch .name{font-size:11px; color:var(--muted);}
+  .swatch .hex{font-family:var(--font-mono); font-size:11px; color:var(--fg); font-variant-numeric:tabular-nums;}
+
+  .mockup-frame{
+    background:var(--bg);
+    padding:40px 20px;
+    display:flex;
+    justify-content:center;
+  }
+  .mockup{width:100%; max-width:20rem; display:flex; flex-direction:column; gap:18px;}
+  .mockup h3{font-size:17px; font-weight:600; text-align:center; color:var(--fg); font-family:var(--font-sans);}
+
+  /* Run A field */
+  .runA .id-input{
+    height:44px; border-radius:8px; border:1px solid rgba(255,255,255,0.14);
+    background:var(--surface); color:var(--fg); font-family:var(--font-mono);
+    font-size:22px; font-variant-numeric:tabular-nums; padding:0 14px; width:100%;
+  }
+  .runA .go-button{
+    height:44px; border-radius:8px; border:none; background:var(--accent);
+    color:#08211D; font-family:var(--font-sans); font-size:15px; font-weight:600; width:100%;
+  }
+  .runA label{font-size:13px; color:var(--fg); font-family:var(--font-sans); font-weight:500;}
+  .runA .hint{font-size:12px; color:var(--muted); font-family:var(--font-sans); line-height:1.5;}
+  .runA .field-group{display:flex; flex-direction:column; gap:6px;}
+
+  /* Run B plate */
+  .runB .field-group{display:flex; flex-direction:column; gap:6px;}
+  .runB label{font-size:13px; color:var(--fg); font-family:var(--font-sans); font-weight:500;}
+  .runB .plate{
+    height:56px; border-radius:4px; border:none;
+    background:var(--accent); color:var(--ink);
+    font-family:var(--font-display); font-size:26px; font-weight:600;
+    letter-spacing:0.01em; padding:0 16px; width:100%;
+    box-shadow:2px 2px 0 rgba(0,0,0,0.35);
+    font-variant-numeric:tabular-nums;
+  }
+  .runB .hint{font-size:12px; color:var(--muted); font-family:var(--font-sans); line-height:1.5;}
+  .runB .go-button{
+    height:56px; border-radius:4px; border:1px solid var(--border); background:var(--surface);
+    color:var(--fg); font-family:var(--font-sans); font-size:15px; font-weight:600; width:100%;
+  }
+
+  .diff-table{width:100%; border-collapse:collapse; font-size:13px; margin-top:4px;}
+  .diff-table th{text-align:left; color:var(--page-muted); font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:0.05em; padding:0 10px 8px; border-bottom:1px solid var(--page-border);}
+  .diff-table td{padding:10px; border-bottom:1px solid var(--page-border); vertical-align:top;}
+  .diff-table tr:last-child td{border-bottom:none;}
+  .diff-table td:first-child{color:var(--page-muted); white-space:nowrap; font-size:12px;}
+
+  footer{border-top:1px solid var(--page-border); padding-top:18px; font-size:12px; color:var(--page-muted);}
+</style>
+
+<div class="page">
+
+  <div class="masthead">
+    <span class="eyebrow">Design comparison &middot; Task 56</span>
+    <h1>Two Design Runs</h1>
+    <p class="sub">Same brief — the FPL Assistant home page's team-ID entry field — run through two independent design pipelines to compare direction. Both are real, computed specs, not sketches.</p>
+  </div>
+
+  <div class="compare-grid">
+
+    <div class="run runA">
+      <div class="run-head">
+        <span class="tag">Run A &middot; designpowers pipeline</span>
+        <h2>Terminal-clean</h2>
+        <p class="desc">Dark-fintech-dashboard language, borrowed from TradingView. Restrained: one accent used once, minimal chrome.</p>
+      </div>
+      <div class="run-meta">
+        <div><span class="k">Direction</span>technical / utilitarian</div>
+        <div><span class="k">Color strategy</span>restrained</div>
+        <div><span class="k">Type</span>Geist + IBM Plex Mono</div>
+        <div><span class="k">Radius</span>8px, one value</div>
+      </div>
+      <div class="swatch-row">
+        <div class="swatch"><div class="chip" style="background:#0B0E14"></div><div class="name">Background</div><div class="hex">#0B0E14</div></div>
+        <div class="swatch"><div class="chip" style="background:#12161F"></div><div class="name">Surface</div><div class="hex">#12161F</div></div>
+        <div class="swatch"><div class="chip" style="background:#5FB8AE"></div><div class="name">Accent</div><div class="hex">#5FB8AE</div></div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup">
+          <h3>FPL Assistant</h3>
+          <div class="field-group">
+            <label>Team ID</label>
+            <input class="id-input" type="text" value="1234567" readonly />
+            <span class="hint">Look in your team's page address on the FPL website or app.</span>
+          </div>
+          <button class="go-button" type="button">View team</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="run runB">
+      <div class="run-head">
+        <span class="tag">Run B &middot; frontend-design-ui-ux</span>
+        <h2>Number plate</h2>
+        <p class="desc">Industrial / signage — a stadium seat-plate or matchday squad-number, sport's own visual language instead of finance's.</p>
+      </div>
+      <div class="run-meta">
+        <div><span class="k">Direction</span>industrial / signage</div>
+        <div><span class="k">Color strategy</span>committed</div>
+        <div><span class="k">Type</span>Oswald + Work Sans</div>
+        <div><span class="k">Radius</span>4px, sharper</div>
+      </div>
+      <div class="swatch-row">
+        <div class="swatch"><div class="chip" style="background:#1A140C"></div><div class="name">Background</div><div class="hex">#1A140C</div></div>
+        <div class="swatch"><div class="chip" style="background:#241C10"></div><div class="name">Surface</div><div class="hex">#241C10</div></div>
+        <div class="swatch"><div class="chip" style="background:#E8A33D"></div><div class="name">Plate</div><div class="hex">#E8A33D</div></div>
+      </div>
+      <div class="mockup-frame">
+        <div class="mockup">
+          <h3>FPL Assistant</h3>
+          <div class="field-group">
+            <label>Team ID</label>
+            <input class="plate" type="text" value="1234567" readonly />
+            <span class="hint">Look in your team's page address on the FPL website or app.</span>
+          </div>
+          <button class="go-button" type="button">View team</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <section>
+    <h2 style="font-size:14px; text-transform:uppercase; letter-spacing:0.08em; color:var(--page-muted); font-weight:600; margin-bottom:14px;">Where they actually differ</h2>
+    <table class="diff-table">
+      <thead><tr><th>Dimension</th><th>Run A — Terminal-clean</th><th>Run B — Number plate</th></tr></thead>
+      <tbody>
+        <tr><td>Aesthetic bet</td><td>Borrows finance's visual trust signals (dark, monospace, TradingView-adjacent)</td><td>Borrows sport's own visual trust signals (physical signage, kit numbering)</td></tr>
+        <tr><td>Accent role</td><td>Restrained — one thin accent, used once, never a fill</td><td>Committed — the accent IS the plate, 30-60% of the focal area</td></tr>
+        <tr><td>Signature move</td><td>None specified — deliberately quiet, no single memorable device</td><td>The split-flap settle on load — one orchestrated, motivated animation</td></tr>
+        <tr><td>Radius language</td><td>8px, soft-ish</td><td>4px, sharper — matches a physical plate's crisp edges</td></tr>
+        <tr><td>Shadow</td><td>None, anywhere</td><td>One hard flat offset shadow, on the plate only — "mounted," not "floating"</td></tr>
+        <tr><td>Contrast (accent-adjacent)</td><td>Accent-on-background: 8.24:1</td><td>Ink-on-plate: 8.36:1; plate-on-background: 8.47:1</td></tr>
+        <tr><td>Process</td><td>7-stage designpowers pipeline (discovery → strategy → taste → plan → ui/interaction/content)</td><td>Single-pass frontend-design-ui-ux (discovery → direction lock → DESIGN.md → flow/component spec → pre-flight)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    Run A: docs/designpowers/ &middot; design-state.md &nbsp;&middot;&nbsp; Run B: .ulpi/design/DESIGN.md, .ulpi/design/home-page.md
+  </footer>
+
+</div>
