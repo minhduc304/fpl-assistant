@@ -39,3 +39,5 @@ frontend-mockups/
 design-state.md
 docs/
 .ulpi/
+.vercel
+.env*

@@ -101,3 +101,7 @@ jobs:
         run: |
           curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_API }}"
           curl -f -X POST "${{ secrets.RENDER_DEPLOY_HOOK_MCP }}"
+
+      - name: Fire Vercel deploy hook
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: curl -f -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
