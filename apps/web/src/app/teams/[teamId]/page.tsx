@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { callRailsApi, RailsApiError } from "@/lib/api";
 import { formatDataAsOfTime } from "@/lib/format";
+import { LeagueIdForm } from "@/components/league-id-form";
 
 export default async function TeamOverviewPage({ params }: PageProps<"/teams/[teamId]">) {
   const { teamId: teamIdParam } = await params;
@@ -60,6 +61,8 @@ export default async function TeamOverviewPage({ params }: PageProps<"/teams/[te
         >
           View squad
         </Link>
+
+        <LeagueIdForm teamId={teamId} />
       </main>
     </div>
   );
