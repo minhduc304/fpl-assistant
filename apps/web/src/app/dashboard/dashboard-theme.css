@@ -1,0 +1,260 @@
+/* Neo-brutalist theme, scoped to the /dashboard sandbox only.
+   Locked system: docs/pitchside-pipeline/impeccable-brutalist/DESIGN.md */
+
+.dashboard-brutalist {
+  --background: #f2ede3;
+  --foreground: #0d0d0d;
+  --card: #ffffff;
+  --card-foreground: #0d0d0d;
+  --popover: #ffffff;
+  --popover-foreground: #0d0d0d;
+  --primary: #d9531f;
+  --primary-foreground: #0d0d0d;
+  --secondary: #ffffff;
+  --secondary-foreground: #0d0d0d;
+  --muted: #f2ede3;
+  --muted-foreground: #5b5648;
+  --accent: #d9531f;
+  --accent-foreground: #0d0d0d;
+  --border: #0d0d0d;
+  --input: #0d0d0d;
+  --ring: #d9531f;
+  --radius: 0px;
+
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0d0d0d;
+  --sidebar-primary: #d9531f;
+  --sidebar-primary-foreground: #0d0d0d;
+  --sidebar-accent: #d9531f;
+  --sidebar-accent-foreground: #0d0d0d;
+  --sidebar-border: #0d0d0d;
+  --sidebar-ring: #d9531f;
+
+  --brutal-border-width: 3px;
+  --brutal-shadow: 5px 5px 0 #0d0d0d;
+  --brutal-shadow-sm: 3px 3px 0 #0d0d0d;
+
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-space-grotesk), sans-serif;
+  min-height: 100dvh;
+}
+
+.dashboard-brutalist [data-slot="sidebar-inset"] {
+  background: var(--background);
+}
+
+/* Grain overlay — same dot-grid technique as the outgoing Matchday Grain system
+   (docs/pitchside-pipeline/impeccable/index.html), re-tuned for a light ground:
+   multiply blend instead of overlay, since overlay washes out on white/paper. */
+.dashboard-brutalist::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(13, 13, 13, 0.06) 1px, transparent 1.3px);
+  background-size: 3px 3px;
+  mix-blend-mode: multiply;
+}
+
+/* Cards: square, thick border, hard offset shadow, no ring/gradient */
+.dashboard-brutalist [data-slot="card"] {
+  border-radius: 0;
+  border: var(--brutal-border-width) solid var(--foreground);
+  box-shadow: var(--brutal-shadow);
+  background: var(--card);
+  background-image: none !important;
+}
+
+.dashboard-brutalist [data-slot="card-title"] {
+  font-family: var(--font-anton), sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+}
+
+.dashboard-brutalist [data-slot="badge"] {
+  border-radius: 0;
+  border: 2px solid var(--foreground);
+  background: transparent;
+  color: var(--foreground);
+}
+
+.dashboard-brutalist [data-slot="badge"][data-variant="default"] {
+  background: transparent;
+  color: var(--foreground);
+}
+
+/* Buttons: square, thick border, hard offset shadow */
+.dashboard-brutalist [data-slot="button"] {
+  border-radius: 0 !important;
+}
+
+.dashboard-brutalist [data-slot="button"][data-variant="default"] {
+  border: var(--brutal-border-width) solid var(--foreground);
+  box-shadow: var(--brutal-shadow-sm);
+  background: var(--foreground);
+  color: #ffffff;
+}
+
+.dashboard-brutalist [data-slot="button"][data-variant="outline"] {
+  border: var(--brutal-border-width) solid var(--foreground);
+  box-shadow: var(--brutal-shadow-sm);
+  background: var(--card);
+}
+
+/* Sidebar */
+.dashboard-brutalist [data-slot="sidebar-container"] {
+  border-right: var(--brutal-border-width) solid var(--foreground);
+}
+
+.dashboard-brutalist [data-slot="sidebar-menu-button"] {
+  border-radius: 0;
+}
+
+.dashboard-brutalist [data-slot="sidebar-menu-button"][data-active="true"] {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-weight: 700;
+}
+
+.dashboard-brutalist [data-slot="sidebar-header"] {
+  border-bottom: 2px solid var(--foreground);
+}
+
+.dashboard-brutalist [data-slot="sidebar-footer"] {
+  border-top: 2px solid var(--foreground);
+}
+
+/* Header */
+.dashboard-brutalist [data-slot="separator"] {
+  background: var(--foreground);
+}
+
+.dashboard-brutalist header {
+  border-bottom: var(--brutal-border-width) solid var(--foreground) !important;
+  background: var(--background);
+}
+
+/* Wordmark / tag chip, matching the mockup's row-top pattern */
+.dashboard-brutalist .brutal-wordmark {
+  font-family: var(--font-anton), sans-serif;
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.dashboard-brutalist .brutal-tag {
+  border: 2px solid var(--foreground);
+  padding: 3px 9px;
+  font-weight: 700;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  box-shadow: var(--brutal-shadow-sm);
+  background: var(--card);
+}
+
+.dashboard-brutalist h1.brutal-h1 {
+  font-family: var(--font-anton), sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* Tables: fixtures, standings — hard rule between rows, uppercase headers */
+.dashboard-brutalist [data-slot="table-container"] {
+  overflow-x: auto;
+}
+
+.dashboard-brutalist [data-slot="table-head"] {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted-foreground);
+  padding: 6px 16px;
+  height: auto;
+}
+
+.dashboard-brutalist [data-slot="table-row"] {
+  border-color: var(--foreground);
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+  border-bottom: none;
+}
+
+.dashboard-brutalist [data-slot="table-row"]:first-child {
+  border-top: none;
+}
+
+.dashboard-brutalist [data-slot="table-cell"] {
+  padding: 7px 16px;
+  white-space: normal;
+}
+
+/* Squad roster: real 15-pick list, not a formation string */
+.dashboard-brutalist .roster-group-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted-foreground);
+  padding: 8px 16px 2px;
+  margin: 0;
+}
+
+.dashboard-brutalist .roster-row {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  border-top: 1px solid color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+
+.dashboard-brutalist .roster-row:first-of-type {
+  border-top: none;
+}
+
+.dashboard-brutalist .pos-badge {
+  border: 2px solid var(--foreground);
+  width: 30px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.dashboard-brutalist .roster-name {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dashboard-brutalist .cap-mark,
+.dashboard-brutalist .vc-mark {
+  border: 2px solid var(--foreground);
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.dashboard-brutalist .cap-mark {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+.dashboard-brutalist .vc-mark {
+  background: var(--card);
+}
