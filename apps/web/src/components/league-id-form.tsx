@@ -91,7 +91,7 @@ export function LeagueIdForm({ teamId }: { teamId: number }) {
 
       <button
         type="submit"
-        className="mt-1 h-12 w-full rounded-lg border text-base font-semibold transition-colors duration-150 hover:bg-[var(--card)] active:bg-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--foreground)]"
+        className="mt-1 h-12 w-full rounded-lg border text-base font-semibold transition-colors duration-150 hover:bg-[var(--card)] active:bg-[var(--border)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--foreground)]"
         style={{
           borderColor: "var(--border-strong)",
           color: "var(--foreground)",

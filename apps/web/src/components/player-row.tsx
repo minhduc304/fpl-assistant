@@ -32,7 +32,7 @@ export function PlayerRow({ player, selected, onToggleCompare, compareDisabled }
         <span className="text-sm text-[var(--muted-foreground)]">{player.team ?? "—"}</span>
       </span>
 
-      <span className="rounded-full border border-[var(--border)] px-2 py-0.5 text-xs uppercase tracking-wide text-[var(--muted-foreground)] max-[480px]:col-start-3 max-[480px]:row-start-1">
+      <span className="rounded-[3px] border border-[var(--border)] px-2 py-0.5 text-xs uppercase tracking-wide text-[var(--muted-foreground)] max-[480px]:col-start-3 max-[480px]:row-start-1">
         {player.position ?? "—"}
       </span>
 

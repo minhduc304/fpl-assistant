@@ -16,7 +16,7 @@ export function PlayerRowSkeleton() {
         <div className="h-4 w-32 rounded-sm bg-[var(--muted)]" />
         <div className="h-3 w-20 rounded-sm bg-[var(--muted)]" />
       </div>
-      <div className="h-5 w-12 rounded-full bg-[var(--muted)] max-[480px]:col-start-3 max-[480px]:row-start-1" />
+      <div className="h-5 w-12 rounded-[3px] bg-[var(--muted)] max-[480px]:col-start-3 max-[480px]:row-start-1" />
       <div className="h-4 w-10 rounded-sm bg-[var(--muted)] justify-self-end max-[480px]:col-start-1 max-[480px]:col-span-3 max-[480px]:row-start-2 max-[480px]:justify-self-start" />
       <div className="h-4 w-10 rounded-sm bg-[var(--muted)] justify-self-end max-[480px]:hidden" />
       <div className="h-4 w-10 rounded-sm bg-[var(--muted)] justify-self-end max-[480px]:hidden" />

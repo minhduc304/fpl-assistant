@@ -9,7 +9,7 @@ const CONFIDENCE_LABELS: Record<Confidence, string> = {
 };
 
 const CONFIDENCE_COLORS: Record<Confidence, string> = {
-  high: "var(--primary)",
+  high: "var(--foreground)",
   medium: "var(--muted-foreground)",
   low: "var(--faint)",
 };

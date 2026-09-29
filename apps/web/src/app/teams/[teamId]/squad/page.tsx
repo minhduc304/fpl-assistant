@@ -32,7 +32,11 @@ function PlayerChip({ pick }: { pick: SquadPick }) {
       {pick.is_captain || pick.is_vice_captain ? (
         <span
           className="rounded-md border px-1.5 text-xs font-semibold"
-          style={{ borderColor: "var(--primary)", color: "var(--primary)" }}
+          style={
+            pick.is_captain
+              ? { borderColor: "var(--accent)", color: "var(--accent)" }
+              : { borderColor: "var(--border)", color: "var(--muted-foreground)" }
+          }
           aria-label={pick.is_captain ? "Captain" : "Vice-captain"}
         >
           {pick.is_captain ? "C" : "VC"}

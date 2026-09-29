@@ -65,7 +65,7 @@ function GameweekTag({ fixture }: { fixture: Fixture }) {
 
 function FixtureRow({ fixture, highlighted }: { fixture: Fixture; highlighted: boolean }) {
   const rowStyle = highlighted
-    ? { backgroundColor: "var(--card)", borderLeftColor: "var(--primary)", borderLeftWidth: "2px" }
+    ? { borderLeftColor: "var(--foreground)", borderLeftWidth: "2px" }
     : { borderLeftColor: "transparent", borderLeftWidth: "2px" };
 
   return (
@@ -94,8 +94,7 @@ function FixtureCard({ fixture, highlighted }: { fixture: Fixture; highlighted: 
       className="flex flex-col gap-2 rounded-lg border p-4"
       style={{
         borderColor: "var(--border)",
-        backgroundColor: highlighted ? "var(--card)" : undefined,
-        borderLeftColor: highlighted ? "var(--primary)" : "var(--border)",
+        borderLeftColor: highlighted ? "var(--foreground)" : "var(--border)",
         borderLeftWidth: highlighted ? "2px" : "1px",
       }}
     >

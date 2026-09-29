@@ -144,10 +144,10 @@ export default async function TransferSuggestionPage({
               key={opt.value}
               href={`/teams/${teamId}/transfer?risk_tolerance=${opt.value}`}
               aria-current={riskTolerance === opt.value ? "page" : undefined}
-              className="rounded-full border px-3 py-1.5 text-sm font-medium no-underline transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
+              className="rounded-[3px] border px-3 py-1.5 text-sm font-medium no-underline transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
               style={
                 riskTolerance === opt.value
-                  ? { backgroundColor: "var(--primary)", color: "var(--primary-foreground)", borderColor: "var(--primary)" }
+                  ? { backgroundColor: "var(--foreground)", color: "var(--background)", borderColor: "var(--foreground)" }
                   : { color: "var(--foreground)", borderColor: "var(--border-strong)" }
               }
             >

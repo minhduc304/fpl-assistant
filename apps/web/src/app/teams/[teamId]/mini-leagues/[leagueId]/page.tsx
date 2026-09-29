@@ -95,7 +95,6 @@ export default async function MiniLeagueStandingsPage({
                     className="border-t"
                     style={{
                       borderColor: "var(--border)",
-                      backgroundColor: isYou ? "var(--card)" : undefined,
                       borderLeftColor: isYou ? "var(--primary)" : "transparent",
                       borderLeftWidth: "2px",
                     }}
@@ -137,7 +136,6 @@ export default async function MiniLeagueStandingsPage({
                 className="flex flex-col gap-2 rounded-lg border p-4"
                 style={{
                   borderColor: "var(--border)",
-                  backgroundColor: isYou ? "var(--card)" : undefined,
                   borderLeftColor: isYou ? "var(--primary)" : "var(--border)",
                   borderLeftWidth: isYou ? "2px" : "1px",
                 }}
