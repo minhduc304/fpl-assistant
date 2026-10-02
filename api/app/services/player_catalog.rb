@@ -1,6 +1,6 @@
 # Turns FPL `bootstrap-static` into `Player`-shaped records, parsed here in
 # exactly one place and consumed by the getPlayerStats / searchPlayers /
-# comparePlayers controllers.
+# comparePlayers / (players) teams controllers.
 #
 # Derivation (no hardcoded position or team map):
 #   name         = element `web_name`
@@ -17,6 +17,9 @@
 #     (Array<Player>), `.data_as_of` (ISO8601 String, nil unless stale) and
 #     `.stale` (bool) — the exact shape the list controllers render as
 #     `{ players: [...], data_as_of:, stale: }`.
+#   - `teams` returns a `PlayerCatalog::TeamsResult` with `.teams`
+#     (Array<String>, sorted club names, deduped via `teams[].id` uniqueness),
+#     same `.data_as_of`/`.stale` convention.
 #
 # `data_as_of` = `FplClient::Result#fetched_at.iso8601` when the result is
 # stale, otherwise nil (mirrors squad_assembler.rb).
@@ -32,10 +35,17 @@ class PlayerCatalog
   )
 
   Result = Struct.new(:players, :data_as_of, :stale, keyword_init: true)
+  TeamsResult = Struct.new(:teams, :data_as_of, :stale, keyword_init: true)
 
   class NotFoundError < StandardError; end
 
   class << self
+    def teams
+      catalog = load_catalog
+      names = catalog.teams.values.map { |club| club["name"] }.compact.sort
+      TeamsResult.new(teams: names, data_as_of: catalog.data_as_of, stale: catalog.stale)
+    end
+
     def find(player_id)
       catalog = load_catalog
       element = catalog.elements[player_id]

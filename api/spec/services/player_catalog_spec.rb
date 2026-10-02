@@ -100,6 +100,25 @@ RSpec.describe PlayerCatalog do
     end
   end
 
+  describe ".teams" do
+    it "returns sorted, deduped club names, no new FPL API call" do
+      result = described_class.teams
+
+      expect(result.teams).to eq(%w[Arsenal Liverpool])
+      expect(FplClient).to have_received(:bootstrap_static).once
+    end
+
+    it "populates data_as_of/stale when the underlying bootstrap cache is stale" do
+      stale_time = 2.hours.ago
+      allow(FplClient).to receive(:bootstrap_static)
+        .and_return(bootstrap_result(stale: true, fetched_at: stale_time))
+
+      result = described_class.teams
+      expect(result.stale).to be(true)
+      expect(result.data_as_of).to eq(stale_time.iso8601)
+    end
+  end
+
   describe "derivation" do
     it "resolves position from element_types, not a hardcoded map" do
       weird = default_element_types.map { |t| t["id"] == 3 ? t.merge("singular_name_short" => "MID") : t }

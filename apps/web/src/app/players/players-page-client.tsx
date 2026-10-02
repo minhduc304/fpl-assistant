@@ -28,6 +28,7 @@ export function PlayersPageClient() {
   const [position, setPosition] = useState(searchParams.get("position") ?? "");
   const [team, setTeam] = useState(searchParams.get("team") ?? "");
   const [players, setPlayers] = useState<Player[]>([]);
+  const [teamOptions, setTeamOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [liveMessage, setLiveMessage] = useState("");
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
@@ -62,6 +63,12 @@ export function PlayersPageClient() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    fetch("/api/players/teams")
+      .then((response) => response.json())
+      .then((data) => setTeamOptions(data.teams ?? []));
+  }, []);
+
   function handleNameChange(value: string) {
     setName(value);
     if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -92,7 +99,6 @@ export function PlayersPageClient() {
     });
   }
 
-  const teamOptions = Array.from(new Set(players.map((p) => p.team).filter((t): t is string => !!t)));
   const compareDisabled = selectedIds.length >= COMPARE_CAP;
   const canCompare = selectedIds.length >= 2;
 

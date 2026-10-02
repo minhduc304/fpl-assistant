@@ -1,6 +1,13 @@
-# Player read endpoints (openapi.yaml: getPlayerStats, searchPlayers, comparePlayers).
+# Player read endpoints (openapi.yaml: getPlayerStats, searchPlayers, comparePlayers, getPlayerTeams).
 class PlayersController < ApplicationController
   UNAVAILABLE_MESSAGE = "live data temporarily unavailable, try again shortly".freeze
+
+  # GET /players/teams (getPlayerTeams)
+  def teams
+    render json: serialize_teams(PlayerCatalog.teams), status: :ok
+  rescue FplClient::UnavailableError
+    render json: { message: UNAVAILABLE_MESSAGE }, status: :service_unavailable
+  end
 
   # GET /players/:player_id (getPlayerStats)
   def show
@@ -71,6 +78,12 @@ class PlayersController < ApplicationController
       players: result.players.map { |p| serialize_player(p) },
       stale: !!result.stale
     }
+    body[:data_as_of] = result.data_as_of if result.data_as_of
+    body
+  end
+
+  def serialize_teams(result)
+    body = { teams: result.teams, stale: !!result.stale }
     body[:data_as_of] = result.data_as_of if result.data_as_of
     body
   end

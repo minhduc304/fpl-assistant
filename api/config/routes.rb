@@ -23,9 +23,10 @@ Rails.application.routes.draw do
   # openapi.yaml: GET /mini-leagues/{leagueId}/standings (MiniLeague tag)
   get "mini-leagues/:league_id/standings" => "mini_leagues#standings"
 
-  # These three MUST stay in this order — Rails matches top-down, so the
-  # `compare` and collection routes must precede `:player_id` or they get shadowed.
+  # These MUST stay in this order — Rails matches top-down, so the
+  # `compare`/`teams` and collection routes must precede `:player_id` or they get shadowed.
   get "players/compare" => "players#compare"     # openapi.yaml: GET /players/compare (Players tag)
+  get "players/teams" => "players#teams"         # openapi.yaml: GET /players/teams (Players tag)
   get "players" => "players#index"               # openapi.yaml: GET /players (Players tag)
   get "players/:player_id" => "players#show"     # openapi.yaml: GET /players/{playerId} (Players tag)
 

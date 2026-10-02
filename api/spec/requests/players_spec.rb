@@ -124,6 +124,44 @@ RSpec.describe "Player read endpoints", type: :request do
     end
   end
 
+  describe "GET /players/teams" do
+    def teams_result(names, data_as_of: nil, stale: false)
+      PlayerCatalog::TeamsResult.new(teams: names, data_as_of: data_as_of, stale: stale)
+    end
+
+    it "returns 200 with the sorted club name list" do
+      allow(PlayerCatalog).to receive(:teams).and_return(teams_result(%w[Arsenal Liverpool]))
+
+      get "/players/teams"
+
+      expect(response).to have_http_status(:ok)
+      body = JSON.parse(response.body)
+      expect(body).to eq("teams" => %w[Arsenal Liverpool], "stale" => false)
+      assert_response_schema_confirm(200)
+    end
+
+    it "includes data_as_of when the result is stale" do
+      allow(PlayerCatalog).to receive(:teams)
+        .and_return(teams_result(%w[Arsenal], data_as_of: "2026-09-06T09:00:00Z", stale: true))
+
+      get "/players/teams"
+
+      body = JSON.parse(response.body)
+      expect(body["data_as_of"]).to eq("2026-09-06T09:00:00Z")
+      expect(body["stale"]).to be(true)
+      assert_response_schema_confirm(200)
+    end
+
+    it "returns 503 when FplClient::UnavailableError propagates" do
+      allow(PlayerCatalog).to receive(:teams).and_raise(FplClient::UnavailableError)
+
+      get "/players/teams"
+
+      expect(response).to have_http_status(:service_unavailable)
+      assert_response_schema_confirm(503)
+    end
+  end
+
   describe "GET /players/compare" do
     it "returns 200 for playerIds=302,401" do
       allow(PlayerCatalog).to receive(:by_ids).with([302, 401])

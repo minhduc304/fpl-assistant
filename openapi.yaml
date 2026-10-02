@@ -163,6 +163,40 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
 
+  /players/teams:
+    get:
+      operationId: getPlayerTeams
+      tags: [Players]
+      summary: List the canonical current Premier League club names
+      description: >
+        Sourced from the cached bootstrap-static club list (no new FPL API
+        call). Use this to populate a team-filter typeahead instead of
+        deriving club names from whatever `/players` results happen to be
+        loaded.
+      responses:
+        '200':
+          description: All current PL club names
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  teams:
+                    type: array
+                    items:
+                      type: string
+                  data_as_of:
+                    $ref: '#/components/schemas/DataAsOf'
+                  stale:
+                    $ref: '#/components/schemas/Stale'
+              example:
+                teams: ["Arsenal", "Aston Villa", "Liverpool", "Man City"]
+                stale: false
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
   /players/{playerId}:
     get:
       operationId: getPlayerStats

@@ -64,6 +64,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/players/teams": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List the canonical current Premier League club names
+         * @description Sourced from the cached bootstrap-static club list (no new FPL API call). Use this to populate a team-filter typeahead instead of deriving club names from whatever `/players` results happen to be loaded.
+         */
+        get: operations["getPlayerTeams"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/players/{playerId}": {
         parameters: {
             query?: never;
@@ -635,6 +655,43 @@ export interface operations {
                      */
                     "application/json": {
                         players?: components["schemas"]["Player"][];
+                        data_as_of?: components["schemas"]["DataAsOf"];
+                        stale?: components["schemas"]["Stale"];
+                    };
+                };
+            };
+            429: components["responses"]["TooManyRequests"];
+            503: components["responses"]["ServiceUnavailable"];
+        };
+    };
+    getPlayerTeams: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All current PL club names */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    /**
+                     * @example {
+                     *       "teams": [
+                     *         "Arsenal",
+                     *         "Aston Villa",
+                     *         "Liverpool",
+                     *         "Man City"
+                     *       ],
+                     *       "stale": false
+                     *     }
+                     */
+                    "application/json": {
+                        teams?: string[];
                         data_as_of?: components["schemas"]["DataAsOf"];
                         stale?: components["schemas"]["Stale"];
                     };
