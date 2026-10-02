@@ -24,18 +24,21 @@ import {
   TrophyIcon,
 } from "lucide-react"
 
-const TEAM_ID = 1234567
+const LEAGUE_ID = 314
 
-const navItems = [
-  { title: "Dashboard", url: `/dashboard`, icon: <LayoutDashboardIcon />, active: true },
-  { title: "Squad", url: `/teams/${TEAM_ID}/squad`, icon: <UsersIcon /> },
-  { title: "Captain suggestion", url: `/teams/${TEAM_ID}/captain`, icon: <StarIcon /> },
-  { title: "Transfer suggestion", url: `/teams/${TEAM_ID}/transfer`, icon: <ArrowRightLeftIcon /> },
-  { title: "Fixtures", url: `/teams/${TEAM_ID}/fixtures`, icon: <CalendarIcon /> },
-  { title: "Charts", url: `/teams/${TEAM_ID}/charts`, icon: <ChartBarIcon /> },
-]
+export function AppSidebar({
+  teamId,
+  ...props
+}: React.ComponentProps<typeof Sidebar> & { teamId: number }) {
+  const navItems = [
+    { title: "Dashboard", url: `/dashboard/${teamId}`, icon: <LayoutDashboardIcon />, active: true },
+    { title: "Squad", url: `/teams/${teamId}/squad`, icon: <UsersIcon /> },
+    { title: "Captain suggestion", url: `/teams/${teamId}/captain`, icon: <StarIcon /> },
+    { title: "Transfer suggestion", url: `/teams/${teamId}/transfer`, icon: <ArrowRightLeftIcon /> },
+    { title: "Fixtures", url: `/teams/${teamId}/fixtures`, icon: <CalendarIcon /> },
+    { title: "Charts", url: `/teams/${teamId}/charts`, icon: <ChartBarIcon /> },
+  ]
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -67,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <Link
-              href={`/teams/${TEAM_ID}/mini-leagues/314`}
+              href={`/teams/${teamId}/mini-leagues/${LEAGUE_ID}`}
               className="flex items-center gap-2 px-2 py-1.5 text-sm font-medium"
             >
               <TrophyIcon className="size-4" />
