@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's getFixtures operation — a contract
@@ -14,6 +15,7 @@ export function registerGetFixtures(server: McpServer): void {
     {
       description: "Get fixture difficulty ratings, including double/blank gameweek flags.",
       inputSchema,
+      outputSchema: outputSchemas.get_fixtures,
     },
     async ({ gameweek, team_id }) => {
       const query: { gameweek?: number; teamId?: number } = {};
@@ -26,7 +28,7 @@ export function registerGetFixtures(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

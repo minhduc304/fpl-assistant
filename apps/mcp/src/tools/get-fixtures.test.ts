@@ -68,7 +68,7 @@ describe("get_fixtures", () => {
 
     const result = await client.callTool({ name: "get_fixtures", arguments: {} });
 
-    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }] });
+    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }], structuredContent: body });
     expect(capturedUrl).not.toContain("gameweek=");
     expect(capturedUrl).not.toContain("teamId=");
   });
@@ -90,7 +90,7 @@ describe("get_fixtures", () => {
       arguments: { gameweek: 7, team_id: "42" },
     });
 
-    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }] });
+    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }], structuredContent: body });
     expect(capturedUrl).toContain("gameweek=7");
     expect(capturedUrl).toContain("teamId=42");
   });

@@ -51,7 +51,7 @@ describe("get_squad", () => {
 
     const result = await client.callTool({ name: "get_squad", arguments: { team_id: "1234567" } });
 
-    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }] });
+    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }], structuredContent: body });
   });
 
   it.each([

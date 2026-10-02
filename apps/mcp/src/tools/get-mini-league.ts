@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's getMiniLeagueStandings operation — a contract
@@ -14,6 +15,7 @@ export function registerGetMiniLeague(server: McpServer): void {
     {
       description: "Get the current standings table for a public FPL mini-league.",
       inputSchema,
+      outputSchema: outputSchemas.get_mini_league,
     },
     async ({ league_id }) => {
       const result = await callRailsTool((client) =>
@@ -24,7 +26,7 @@ export function registerGetMiniLeague(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

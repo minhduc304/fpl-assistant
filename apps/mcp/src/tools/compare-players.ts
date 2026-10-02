@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's comparePlayers operation — a contract
@@ -17,6 +18,7 @@ export function registerComparePlayers(server: McpServer): void {
     {
       description: "Side-by-side comparison of two or more players.",
       inputSchema,
+      outputSchema: outputSchemas.compare_players,
     },
     async ({ player_ids }) => {
       const result = await callRailsTool((client) =>
@@ -27,7 +29,7 @@ export function registerComparePlayers(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

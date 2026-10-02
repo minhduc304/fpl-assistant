@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's getChartData operation — a contract
@@ -22,6 +23,7 @@ export function registerGetChartData(server: McpServer): void {
     {
       description: "Get time-series chart data for a team: points per gameweek, rank trajectory, or price history.",
       inputSchema,
+      outputSchema: outputSchemas.get_chart_data,
     },
     async ({ team_id, type }) => {
       const result = await callRailsTool((client) =>
@@ -32,7 +34,7 @@ export function registerGetChartData(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

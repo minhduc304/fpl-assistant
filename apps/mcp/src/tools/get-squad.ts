@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's getSquad operation — a contract
@@ -14,6 +15,7 @@ export function registerGetSquad(server: McpServer): void {
     {
       description: "Get a team's current 15-player squad, formation, and captain/vice-captain picks.",
       inputSchema,
+      outputSchema: outputSchemas.get_squad,
     },
     async ({ team_id }) => {
       const result = await callRailsTool((client) =>
@@ -24,7 +26,7 @@ export function registerGetSquad(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

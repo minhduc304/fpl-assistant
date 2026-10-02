@@ -50,7 +50,7 @@ describe("get_mini_league", () => {
 
     const result = await client.callTool({ name: "get_mini_league", arguments: { league_id: "987654" } });
 
-    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }] });
+    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }], structuredContent: body });
   });
 
   it.each([

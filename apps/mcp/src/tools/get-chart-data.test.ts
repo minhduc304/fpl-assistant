@@ -57,7 +57,7 @@ describe("get_chart_data", () => {
         arguments: { team_id: "1234567", type },
       });
 
-      expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }] });
+      expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }], structuredContent: body });
       expect(capturedUrl).toContain(`type=${type}`);
     });
   });

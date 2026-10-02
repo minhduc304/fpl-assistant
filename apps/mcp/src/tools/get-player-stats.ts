@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's getPlayerStats operation — a contract
@@ -14,6 +15,7 @@ export function registerGetPlayerStats(server: McpServer): void {
     {
       description: "Get a single player's stats (price, points, form, and other stats).",
       inputSchema,
+      outputSchema: outputSchemas.get_player_stats,
     },
     async ({ player_id }) => {
       const result = await callRailsTool((client) =>
@@ -24,7 +26,7 @@ export function registerGetPlayerStats(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

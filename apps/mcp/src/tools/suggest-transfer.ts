@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's suggestTransfer operation — a contract
@@ -19,6 +20,7 @@ export function registerSuggestTransfer(server: McpServer): void {
     {
       description: "Suggest a transfer for the given team, with reasoning and alternatives.",
       inputSchema,
+      outputSchema: outputSchemas.suggest_transfer,
     },
     async ({ team_id, risk_tolerance }) => {
       const result = await callRailsTool((client) =>
@@ -34,7 +36,7 @@ export function registerSuggestTransfer(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

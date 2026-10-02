@@ -742,8 +742,7 @@ components:
           schema:
             $ref: '#/components/schemas/DegradedState'
           example:
-            message: "Unable to produce a recommendati
-            on right now, please retry shortly"
+            message: "Unable to produce a recommendation right now, please retry shortly"
     Unauthorized:
       description: Missing, invalid, or expired session token
       content:

@@ -54,7 +54,7 @@ describe("compare_players", () => {
       arguments: { player_ids: ["302", "401"] },
     });
 
-    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }] });
+    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(body) }], structuredContent: body });
     expect(capturedUrl).toContain("playerIds=302%2C401");
   });
 

@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's suggestCaptain operation — a contract
@@ -14,6 +15,7 @@ export function registerSuggestCaptain(server: McpServer): void {
     {
       description: "Suggest a captain for the given team, with reasoning and alternatives.",
       inputSchema,
+      outputSchema: outputSchemas.suggest_captain,
     },
     async ({ team_id, gameweek }) => {
       const result = await callRailsTool((client) =>
@@ -29,7 +31,7 @@ export function registerSuggestCaptain(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

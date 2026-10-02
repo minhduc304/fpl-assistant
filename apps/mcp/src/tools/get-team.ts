@@ -1,6 +1,7 @@
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import { callRailsTool, isErrorResult } from "../rails-tool.js";
+import { outputSchemas } from "../generated/output-schemas.js";
 
 /**
  * Hand-synced to openapi.yaml's getTeam operation — a contract
@@ -14,6 +15,7 @@ export function registerGetTeam(server: McpServer): void {
     {
       description: "Get a single FPL team's summary (manager, overall rank, total points).",
       inputSchema,
+      outputSchema: outputSchemas.get_team,
     },
     async ({ team_id }) => {
       const result = await callRailsTool((client) =>
@@ -24,7 +26,7 @@ export function registerGetTeam(server: McpServer): void {
         return result;
       }
 
-      return { content: [{ type: "text", text: JSON.stringify(result) }] };
+      return { content: [{ type: "text", text: JSON.stringify(result) }], structuredContent: result };
     }
   );
 }

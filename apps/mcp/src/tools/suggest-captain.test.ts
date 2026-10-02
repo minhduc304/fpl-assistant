@@ -57,7 +57,10 @@ describe("suggest_captain", () => {
 
     const result = await client.callTool({ name: "suggest_captain", arguments: { team_id: "1234567" } });
 
-    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(RECOMMENDATION_BODY) }] });
+    expect(result).toEqual({
+      content: [{ type: "text", text: JSON.stringify(RECOMMENDATION_BODY) }],
+      structuredContent: RECOMMENDATION_BODY,
+    });
   });
 
   it("passes gameweek through as a query param when provided", async () => {

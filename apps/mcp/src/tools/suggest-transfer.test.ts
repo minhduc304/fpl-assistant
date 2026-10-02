@@ -71,7 +71,10 @@ describe("suggest_transfer", () => {
 
     const result = await client.callTool({ name: "suggest_transfer", arguments: { team_id: "1234567" } });
 
-    expect(result).toEqual({ content: [{ type: "text", text: JSON.stringify(RECOMMENDATION_BODY) }] });
+    expect(result).toEqual({
+      content: [{ type: "text", text: JSON.stringify(RECOMMENDATION_BODY) }],
+      structuredContent: RECOMMENDATION_BODY,
+    });
   });
 
   it("does not send risk_tolerance when omitted (Rails owns the default)", async () => {
