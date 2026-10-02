@@ -370,4 +370,31 @@ RSpec.describe FplClient do
       expect(row.fetched_at).to be_within(1.minute).of(Time.current)
     end
   end
+
+  describe "concurrent cache misses" do
+    # Real threads need real, independent DB connections to exercise the
+    # Postgres advisory lock -- transactional fixtures force every thread
+    # onto the same connection, which would make the lock a no-op here.
+    self.use_transactional_tests = false
+
+    after do
+      ApiCache.where(resource: "fixtures").delete_all
+    end
+
+    it "makes exactly one real HTTP call when two requests race the same uncached resource" do
+      call_count = 0
+      fresh_payload = { "fixtures" => "fresh" }
+      stub_request(:get, fixtures_url).to_return do
+        call_count += 1
+        sleep 0.2
+        { status: 200, body: fresh_payload.to_json }
+      end
+
+      results = Array.new(2) { Thread.new { FplClient.fixtures } }.map(&:value)
+
+      expect(call_count).to eq(1)
+      expect(results.map(&:payload)).to eq([ fresh_payload, fresh_payload ])
+      expect(WebMock).to have_requested(:get, fixtures_url).once
+    end
+  end
 end

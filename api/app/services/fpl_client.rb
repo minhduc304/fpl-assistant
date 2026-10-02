@@ -13,6 +13,8 @@
 # bootstrap-static's cached `events[]` contains an event whose deadline_time
 # has passed but which isn't finished yet. If bootstrap-static has no cached
 # row yet, we default to the off-peak (30 min) TTL rather than forcing a fetch.
+require "zlib"
+
 class FplClient
   BASE_URL = "https://fantasy.premierleague.com/api/".freeze
 
@@ -78,15 +80,35 @@ class FplClient
       cached = ApiCache.find_by(resource: resource)
       return Result.new(payload: cached.payload, stale: false, fetched_at: cached.fetched_at) if cached && fresh?(cached)
 
-      begin
-        payload = fetch_with_retries(path)
-        row = upsert_cache(resource, payload)
-        Result.new(payload: row.payload, stale: false, fetched_at: row.fetched_at)
-      rescue FetchFailedError
-        raise UnavailableError, "FPL API unavailable and no cached data for '#{resource}'" unless cached
+      with_advisory_lock(resource) do
+        # Re-check: the lock holder ahead of us may have already refreshed this resource.
+        cached = ApiCache.find_by(resource: resource)
+        return Result.new(payload: cached.payload, stale: false, fetched_at: cached.fetched_at) if cached && fresh?(cached)
 
-        Result.new(payload: cached.payload, stale: true, fetched_at: cached.fetched_at)
+        begin
+          payload = fetch_with_retries(path)
+          row = upsert_cache(resource, payload)
+          Result.new(payload: row.payload, stale: false, fetched_at: row.fetched_at)
+        rescue FetchFailedError
+          raise UnavailableError, "FPL API unavailable and no cached data for '#{resource}'" unless cached
+
+          Result.new(payload: cached.payload, stale: true, fetched_at: cached.fetched_at)
+        end
       end
+    end
+
+    # Serializes cache-miss-then-fetch across concurrent requests for the same
+    # resource via a Postgres session-level advisory lock, so only one of them
+    # ever reaches the real FPL API. Scoped to the resource's own DB connection
+    # (not a transaction) so it blocks other threads/processes, not just the
+    # current one.
+    def with_advisory_lock(resource)
+      key = Zlib.crc32(resource.to_s)
+      connection = ApiCache.connection
+      connection.execute("SELECT pg_advisory_lock(#{key})")
+      yield
+    ensure
+      connection.execute("SELECT pg_advisory_unlock(#{key})")
     end
 
     def fresh?(cached_row)
