@@ -8,7 +8,12 @@ Bundler.require(*Rails.groups)
 
 # Load env vars (DATABASE_URL, etc.) from the repo-root .env.local, not a
 # per-app .env file, since /api and /apps share the same Neon credentials.
-Dotenv.load(File.expand_path("../../.env.local", __dir__)) if defined?(Dotenv)
+# .env.development.local loads first so a local override (e.g. DATABASE_URL
+# pointed at a local Postgres) wins without touching the shared file.
+if defined?(Dotenv)
+  Dotenv.load(File.expand_path("../../.env.development.local", __dir__))
+  Dotenv.load(File.expand_path("../../.env.local", __dir__))
+end
 
 module Api
   class Application < Rails::Application
