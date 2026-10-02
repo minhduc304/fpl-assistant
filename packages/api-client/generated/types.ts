@@ -253,9 +253,15 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Log in */
+        /**
+         * Log in
+         * @description Exchanges email/password for a new session token.
+         */
         post: operations["login"];
-        /** Log out (invalidates the current session token) */
+        /**
+         * Log out
+         * @description Invalidates the current session token — it can't be used again after this.
+         */
         delete: operations["logout"];
         options?: never;
         head?: never;
@@ -269,7 +275,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get the signed-in user */
+        /**
+         * Get the signed-in user
+         * @description Resolves the account behind the bearer token — email and the FPL team ID its dashboard shows.
+         */
         get: operations["getCurrentUser"];
         put?: never;
         post?: never;

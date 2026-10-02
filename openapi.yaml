@@ -606,6 +606,7 @@ paths:
       operationId: login
       tags: [Auth]
       summary: Log in
+      description: Exchanges email/password for a new session token.
       requestBody:
         required: true
         content:
@@ -620,7 +621,8 @@ paths:
     delete:
       operationId: logout
       tags: [Auth]
-      summary: Log out (invalidates the current session token)
+      summary: Log out
+      description: Invalidates the current session token — it can't be used again after this.
       security:
         - bearerAuth: []
       responses:
@@ -634,6 +636,7 @@ paths:
       operationId: getCurrentUser
       tags: [Auth]
       summary: Get the signed-in user
+      description: Resolves the account behind the bearer token — email and the FPL team ID its dashboard shows.
       security:
         - bearerAuth: []
       responses:
