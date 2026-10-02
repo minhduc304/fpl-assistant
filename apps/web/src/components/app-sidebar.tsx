@@ -22,7 +22,9 @@ import {
   CalendarIcon,
   ChartBarIcon,
   TrophyIcon,
+  LogOutIcon,
 } from "lucide-react"
+import { logOutAction } from "@/app/(auth)/actions"
 
 const LEAGUE_ID = 314
 
@@ -76,6 +78,17 @@ export function AppSidebar({
               <TrophyIcon className="size-4" />
               <span>Standings</span>
             </Link>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <form action={logOutAction}>
+              <button
+                type="submit"
+                className="flex w-full items-center gap-2 px-2 py-1.5 text-sm font-medium"
+              >
+                <LogOutIcon className="size-4" />
+                <span>Log out</span>
+              </button>
+            </form>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

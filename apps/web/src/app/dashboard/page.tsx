@@ -1,7 +1,10 @@
 import { redirect } from "next/navigation"
+import { getCurrentUser } from "@/lib/auth"
 
-const DEMO_TEAM_ID = 1234567
-
-export default function Page() {
-  redirect(`/dashboard/${DEMO_TEAM_ID}`)
+export default async function Page() {
+  const user = await getCurrentUser()
+  if (!user) {
+    redirect("/log-in")
+  }
+  redirect(`/dashboard/${user.fpl_team_id}`)
 }

@@ -32,6 +32,16 @@ Rails.application.routes.draw do
   # openapi.yaml: GET /fixtures (Fixtures tag)
   get "fixtures" => "fixtures#index"
 
+  # openapi.yaml: POST /sign_up (Auth tag)
+  post "sign_up" => "users#create"
+
+  # openapi.yaml: POST /sessions, DELETE /sessions (Auth tag)
+  post "sessions" => "sessions#create"
+  delete "sessions" => "sessions#destroy"
+
+  # openapi.yaml: GET /me (Auth tag)
+  get "me" => "sessions#show"
+
   # Defines the root path route ("/")
   # root "posts#index"
 end

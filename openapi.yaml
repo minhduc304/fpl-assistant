@@ -29,6 +29,12 @@ tags:
     description: Mini-league standings and rival team comparison
   - name: Charts
     description: Chart data for points, rank, and price history
+  - name: Auth
+    description: >
+      Account creation and session management. Separate from FPL team lookup
+      (which stays public/unauthenticated) — this is the app's own user
+      accounts, used only to resolve which team's dashboard a signed-in
+      visitor sees.
 
 paths:
   /teams/{teamId}:
@@ -568,7 +574,85 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
 
+  /sign_up:
+    post:
+      operationId: signUp
+      tags: [Auth]
+      summary: Create an account
+      description: >
+        Creates a user with an email/password and the FPL team ID the
+        dashboard should show — not an authenticated FPL session, just a
+        plain lookup ID (see Team tag).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/AuthSession'
+        '422':
+          description: Validation failed (e.g. email taken, password too short, invalid team ID)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                message: "Email has already been taken"
+
+  /sessions:
+    post:
+      operationId: login
+      tags: [Auth]
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '201':
+          $ref: '#/components/responses/AuthSession'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    delete:
+      operationId: logout
+      tags: [Auth]
+      summary: Log out (invalidates the current session token)
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Logged out
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /me:
+    get:
+      operationId: getCurrentUser
+      tags: [Auth]
+      summary: Get the signed-in user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Signed-in user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthUser'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Session token returned by /sign_up or /sessions (login)
+
   parameters:
     TeamId:
       name: teamId
@@ -623,6 +707,27 @@ components:
           example:
             message: "Unable to produce a recommendati
             on right now, please retry shortly"
+    Unauthorized:
+      description: Missing, invalid, or expired session token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            message: "Not authenticated"
+    AuthSession:
+      description: Signed in — a session token and the user
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [token, user]
+            properties:
+              token:
+                type: string
+                description: "Opaque session token — send as `Authorization: Bearer <token>`"
+              user:
+                $ref: '#/components/schemas/AuthUser'
 
   schemas:
     DataAsOf:
@@ -846,3 +951,35 @@ components:
             $ref: '#/components/schemas/ReasoningFactor'
         why_not_top_pick:
           type: string
+
+    SignUpRequest:
+      type: object
+      required: [email, password, fpl_team_id]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        fpl_team_id:
+          type: integer
+          description: Public FPL team ID this account's dashboard should show
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+
+    AuthUser:
+      type: object
+      properties:
+        email:
+          type: string
+        fpl_team_id:
+          type: integer
